@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-from .question import QuestionType, questions
+from .question import StrQuestion, IntQuestion, YNQuestion, questions
 
 
 @Gtk.Template(resource_path='/com/streamer272/PyQuiz/window.ui')
@@ -69,16 +69,16 @@ class PyquizWindow(Gtk.ApplicationWindow):
         question = questions[self.current_question]
         self.q_label.set_text(question.question)
 
-        if question.question_type == QuestionType.yes_no:
+        if isinstance(question, YNQuestion):
             self.q_yes_no_button.show()
             self.q_input_str_entry.hide()
             self.q_input_int_entry.hide()
-        elif question.question_type == QuestionType.input_str:
+        elif isinstance(question, StrQuestion):
             self.q_yes_no_button.hide()
             self.q_input_str_entry.show()
             self.q_input_int_entry.hide()
             self.q_input_str_entry.grab_focus_without_selecting()
-        elif question.question_type == QuestionType.input_int:
+        elif isinstance(question, IntQuestion):
             self.q_yes_no_button.hide()
             self.q_input_str_entry.hide()
             self.q_input_int_entry.show()
@@ -87,35 +87,23 @@ class PyquizWindow(Gtk.ApplicationWindow):
     def check_question_answer(self):
         question = questions[self.current_question]
 
-        if question.question_type == QuestionType.yes_no:
-            question = questions[self.current_question]
-            question.answer = "Yes" if self.q_yes_no_button.get_active() else "No"
+        if isinstance(question, YNQuestion):
+            if question.check_answer(self.q_yes_no_button.get_active()):
+                self.correct_answers += 1
             self.q_yes_no_button.set_active(False)
 
-            if question.answer in question.correct_answers:
-                question.answered_correctly = True
-                self.correct_answers += 1
-
-        elif question.question_type == QuestionType.input_str:
-            question = questions[self.current_question]
+        elif isinstance(question, StrQuestion):
             q_entry_buffer = self.q_input_str_entry.get_buffer()
-            question.answer = q_entry_buffer.get_text()
+            if question.check_answer(q_entry_buffer.get_text()):
+                self.correct_answers += 1
             q_entry_buffer.set_text("", -1)
 
-            if question.answer.lower() in [str(i).lower() for i in question.correct_answers]:
-                question.answered_correctly = True
-                self.correct_answers += 1
-
-        elif question.question_type == QuestionType.input_int:
+        elif isinstance(question, IntQuestion):
             self.old_input_int_value = "0"
-            question = questions[self.current_question]
             q_entry_buffer = self.q_input_int_entry.get_buffer()
-            question.answer = str(q_entry_buffer.get_text())
-            q_entry_buffer.set_text("", -1)
-
-            if int(question.answer) in question.correct_answers:
-                question.answered_correctly = True
+            if question.check_answer(int(q_entry_buffer.get_text())):
                 self.correct_answers += 1
+            q_entry_buffer.set_text("", -1)
 
     def finish(self):
         self.finished = True
