@@ -32,8 +32,21 @@
                 <property name="label">QUESTION</property>
               </object>
             </child>
+
             <child>
-              <object class="GtkEntry" id="q_entry">
+              <object class="GtkCheckButton" id="q_yes_no_button">
+                <property name="visible">false</property>
+                <property name="label">Yes</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="q_input_str_entry">
+                <property name="visible">false</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="q_input_int_entry">
+                <property name="visible">false</property>
               </object>
             </child>
           </object>
