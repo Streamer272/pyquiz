@@ -29,6 +29,7 @@ pyquiz_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'question.py',
 ]
 
 install_data(pyquiz_sources, install_dir: moduledir)

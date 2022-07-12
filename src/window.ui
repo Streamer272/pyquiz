@@ -20,19 +20,33 @@
         <property name="orientation">vertical</property>
         <property name="halign">center</property>
         <property name="valign">center</property>
+        <property name="spacing">5</property>
 
         <child>
-          <object class="GtkBox" id="age_box">
+          <object class="GtkBox" id="q_box">
             <property name="orientation">horizontal</property>
             <property name="spacing">8</property>
 
             <child>
-              <object class="GtkLabel" id="age_label">
-                <property name="label">Enter your age:</property>
+              <object class="GtkLabel" id="q_label">
+                <property name="label">QUESTION</property>
               </object>
             </child>
             <child>
-              <object class="GtkEntry" id="age_entry">
+              <object class="GtkEntry" id="q_entry">
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox" id="ok_box">
+            <property name="orientation">horizontal</property>
+            <property name="halign">center</property>
+
+            <child>
+              <object class="GtkButton" id="ok_button">
+                <property name="label">Ok</property>
               </object>
             </child>
           </object>

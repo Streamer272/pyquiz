@@ -16,19 +16,40 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-import time, threading
+from .question import questions
 
 
 @Gtk.Template(resource_path='/com/streamer272/PyQuiz/window.ui')
 class PyquizWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'PyquizWindow'
 
-    age_box = Gtk.Template.Child()
-    age_entry = Gtk.Template.Child()
+    ok_button = Gtk.Template.Child()
+    current_question = 0
+
+    q_label = Gtk.Template.Child()
+    q_entry = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        print("Iiniting!!!!")
+        
+        self.q_label.set_text(questions[self.current_question].question)
+        self.ok_button.connect("clicked", self.on_ok_clicked)
+
+    def on_ok_clicked(self, _):
+        q_entry_buffer = self.q_entry.get_buffer()
+        questions[self.current_question].answer = q_entry_buffer.get_text()
+        q_entry_buffer.set_text("", -1)
+        self.q_entry.grab_focus_without_selecting()
+
+        if (self.current_question + 1 >= len(questions)):
+            return self.finish()
+        self.current_question += 1
+        self.q_label.set_text(questions[self.current_question].question)
+
+    def finish(self):
+        self.q_label.set_text("Thank you for completing the survey!")
+        self.ok_button.hide()
+        self.q_entry.hide()
 
 
 class AboutDialog(Gtk.AboutDialog):
