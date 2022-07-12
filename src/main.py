@@ -32,8 +32,8 @@ class PyquizApplication(Adw.Application):
         super().__init__(application_id='com.streamer272.PyQuiz',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
         self.create_action('quit', self.quit, ['<primary>q'])
-        self.create_action('about', self.on_about_action)
-        self.create_action('preferences', self.on_preferences_action)
+        self.create_action('about', self.on_about_action, ['<primary>a'])
+        self.create_action('preferences', self.on_preferences_action, ['<primary>s'])
 
     def do_activate(self):
         """Called when the application is activated.

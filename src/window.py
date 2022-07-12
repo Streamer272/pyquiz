@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio
 from .question import StrQuestion, IntQuestion, YNQuestion, questions
 
 
@@ -38,11 +38,17 @@ class PyquizWindow(Gtk.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.q_input_int_entry.set_input_purpose(Gtk.InputPurpose.NUMBER)
+        action = Gio.SimpleAction.new("next", None)
+        action.connect("activate", self.on_ok_clicked)
+        self.add_action(action)
+        #kwargs["application"].set_accels_for_action("win.next", ["<primary>lf"])
+
         self.ok_button.connect("clicked", self.on_ok_clicked)
         self.q_input_str_entry.connect("activate", self.on_ok_clicked)
         self.q_input_int_entry.connect("activate", self.on_ok_clicked)
         self.q_input_int_entry.connect("changed", self.on_input_int_change)
+        self.q_input_int_entry.set_input_purpose(Gtk.InputPurpose.NUMBER)
+
         self.render_question()
 
     def on_ok_clicked(self, _):
