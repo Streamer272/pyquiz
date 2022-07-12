@@ -1,0 +1,7 @@
+data/com.streamer272.PyQuiz.desktop.in
+data/com.streamer272.PyQuiz.appdata.xml.in
+data/com.streamer272.PyQuiz.gschema.xml
+src/window.ui
+src/main.py
+src/window.py
+

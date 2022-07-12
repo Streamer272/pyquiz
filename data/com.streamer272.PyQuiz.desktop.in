@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=pyquiz
+Exec=pyquiz
+Icon=com.streamer272.PyQuiz
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

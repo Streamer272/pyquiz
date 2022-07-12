@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="pyquiz">
+	<schema id="com.streamer272.PyQuiz" path="/com/streamer272/PyQuiz/">
+	</schema>
+</schemalist>
