@@ -23,8 +23,10 @@ from .question import QuestionType, questions
 class PyquizWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'PyquizWindow'
 
+    old_input_int_value: str = "0"
     current_question = 0
     correct_answers = 0
+    finished = False
 
     ok_button: Gtk.Button = Gtk.Template.Child()
     q_label: Gtk.Label = Gtk.Template.Child()
@@ -38,15 +40,30 @@ class PyquizWindow(Gtk.ApplicationWindow):
 
         self.q_input_int_entry.set_input_purpose(Gtk.InputPurpose.NUMBER)
         self.ok_button.connect("clicked", self.on_ok_clicked)
+        self.q_input_str_entry.connect("activate", self.on_ok_clicked)
+        self.q_input_int_entry.connect("activate", self.on_ok_clicked)
+        self.q_input_int_entry.connect("changed", self.on_input_int_change)
         self.render_question()
 
     def on_ok_clicked(self, _):
+        if self.finished:
+            self.destroy()
+
         self.check_question_answer()
 
         if (self.current_question + 1 >= len(questions)):
             return self.finish()
         self.current_question += 1
         self.render_question()
+
+    def on_input_int_change(self, _):
+        q_entry_buffer = self.q_input_int_entry.get_buffer()
+        value = q_entry_buffer.get_text()
+        try:
+            float(value)
+            self.old_input_int_value = value
+        except ValueError:
+            q_entry_buffer.set_text(self.old_input_int_value, -1)
 
     def render_question(self):
         question = questions[self.current_question]
@@ -56,7 +73,6 @@ class PyquizWindow(Gtk.ApplicationWindow):
             self.q_yes_no_button.show()
             self.q_input_str_entry.hide()
             self.q_input_int_entry.hide()
-            self.q_yes_no_button.grab_focus_without_selecting()
         elif question.question_type == QuestionType.input_str:
             self.q_yes_no_button.hide()
             self.q_input_str_entry.show()
@@ -91,6 +107,7 @@ class PyquizWindow(Gtk.ApplicationWindow):
                 self.correct_answers += 1
 
         elif question.question_type == QuestionType.input_int:
+            self.old_input_int_value = "0"
             question = questions[self.current_question]
             q_entry_buffer = self.q_input_int_entry.get_buffer()
             question.answer = str(q_entry_buffer.get_text())
@@ -101,8 +118,10 @@ class PyquizWindow(Gtk.ApplicationWindow):
                 self.correct_answers += 1
 
     def finish(self):
+        self.finished = True
+
         self.q_label.set_text(f"You got {self.correct_answers} {'answer' if self.correct_answers == 1 else 'answers'} correctly")
-        self.ok_button.hide()
+        self.ok_button.set_label("Quit")
 
         self.q_yes_no_button.hide()
         self.q_input_str_entry.hide()

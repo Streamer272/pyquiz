@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="PyquizWindow" parent="GtkApplicationWindow">
     <property name="title">PyQuiz</property>
-    <property name="default-width">600</property>
+    <property name="default-width">400</property>
     <property name="default-height">300</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
@@ -42,11 +42,13 @@
             <child>
               <object class="GtkEntry" id="q_input_str_entry">
                 <property name="visible">false</property>
+                <property name="placeholder-text">Blah</property>
               </object>
             </child>
             <child>
               <object class="GtkEntry" id="q_input_int_entry">
                 <property name="visible">false</property>
+                <property name="input-purpose">GTK_INPUT_PURPOSE_NUMBER</property>
               </object>
             </child>
           </object>

@@ -22,7 +22,7 @@ class Question:
 questions = [
     Question(QuestionType.input_str, "What is NRA?", ["National Rifle Association"]),
     Question(QuestionType.input_str, "Who is currect president of the United States of America?", ["Joe Biden"]),
-    Question(QuestionType.input_str, "What is Germanies most known band?", ["Rammstein"]),
+    Question(QuestionType.input_int, "What is the newest Android version?", [12]),
     Question(QuestionType.yes_no, "Does Slovakia have 5 million citizens?", ["Yes"])
 ]
 
