@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Gio
+from gi.repository import Gtk, Gio, Gdk
 from .question import StrQuestion, IntQuestion, YNQuestion, questions
 
 
@@ -39,9 +39,10 @@ class PyquizWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         action = Gio.SimpleAction.new("next", None)
+        print("enter is", Gdk.KEY_KP_Enter, Gdk.keyval_name(Gdk.KEY_KP_Enter))
         action.connect("activate", self.on_ok_clicked)
         self.add_action(action)
-        #kwargs["application"].set_accels_for_action("win.next", ["<primary>lf"])
+        kwargs.get("application").set_accels_for_action("win.next", ["<primary>o"])
 
         self.ok_button.connect("clicked", self.on_ok_clicked)
         self.q_input_str_entry.connect("activate", self.on_ok_clicked)
@@ -51,7 +52,7 @@ class PyquizWindow(Gtk.ApplicationWindow):
 
         self.render_question()
 
-    def on_ok_clicked(self, _):
+    def on_ok_clicked(self, *_args, **_kwargs):
         if self.finished:
             self.destroy()
 
@@ -107,7 +108,14 @@ class PyquizWindow(Gtk.ApplicationWindow):
         elif isinstance(question, IntQuestion):
             self.old_input_int_value = "0"
             q_entry_buffer = self.q_input_int_entry.get_buffer()
-            if question.check_answer(int(q_entry_buffer.get_text())):
+
+            value = 0
+            try:
+                value = int(q_entry_buffer.get_text())
+            except ValueError:
+                pass
+
+            if question.check_answer(value):
                 self.correct_answers += 1
             q_entry_buffer.set_text("", -1)
 

@@ -29,6 +29,18 @@
             </child>
           </object>
         </child>
+
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Quiz</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Next</property>
+                <property name="action-name">win.next</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </object>

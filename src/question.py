@@ -22,7 +22,7 @@ class YNQuestion(Question):
 
     def check_answer(self, answer: bool) -> bool:
         self.answer = answer
-        return self.set_answered_correctly(answer != self.correct_answer)
+        return self.set_answered_correctly(answer == self.correct_answer)
 
 
 class StrQuestion(Question):
