@@ -39,7 +39,6 @@ class PyquizWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         action = Gio.SimpleAction.new("next", None)
-        print("enter is", Gtk.accelerator_name(65293, Gdk.ModifierType.CONTROL_MASK))
         action.connect("activate", self.on_ok_clicked)
         self.add_action(action)
         kwargs.get("application").set_accels_for_action("win.next", ["<primary>Return"])
